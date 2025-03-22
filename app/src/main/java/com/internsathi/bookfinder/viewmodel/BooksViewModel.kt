@@ -1,7 +1,10 @@
-package com.internsathi.bookfinder
+package com.internsathi.bookfinder.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.internsathi.bookfinder.data.BooksRepository
+import com.internsathi.bookfinder.data.UserPreferencesRepository
+import com.internsathi.bookfinder.model.BooksUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -80,7 +83,7 @@ class BooksViewModel @Inject constructor(
 
     var isLightMode: StateFlow<Boolean> = userPreferencesRepository.isLightMode.stateIn(
         viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
+        SharingStarted.Companion.WhileSubscribed(5000),
         true
     )
 

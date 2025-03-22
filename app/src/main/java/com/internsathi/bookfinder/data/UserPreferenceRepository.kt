@@ -1,4 +1,4 @@
-package com.internsathi.bookfinder
+package com.internsathi.bookfinder.data
 
 import android.util.Log
 import androidx.datastore.core.DataStore

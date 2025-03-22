@@ -1,6 +1,6 @@
-package com.internsathi.bookfinder
+package com.internsathi.bookfinder.data
 
-import com.internsathi.bookfinder.data.Books
+import com.internsathi.bookfinder.model.Books
 import javax.inject.Inject
 
 class BooksRepository @Inject constructor(

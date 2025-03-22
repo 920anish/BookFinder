@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
@@ -18,8 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.rememberNavController
+import com.internsathi.bookfinder.navigation.Navigation
 import com.internsathi.bookfinder.ui.theme.BookFinderTheme
+import com.internsathi.bookfinder.viewmodel.BooksViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -31,8 +32,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
+
             val viewModel: BooksViewModel by viewModels()
-            val techUiState = viewModel.techBooksState.collectAsStateWithLifecycle()
             val isLightMode = viewModel.isLightMode.collectAsState()
             BookFinderTheme(darkTheme = !isLightMode.value ) {
                 Scaffold(
@@ -47,7 +49,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 ) {
                                     Icon(
-                                        imageVector = if (isLightMode.value)Icons.Filled.LightMode else Icons.Default.DarkMode,
+                                        imageVector = if (!isLightMode.value)Icons.Filled.LightMode else Icons.Default.DarkMode,
                                         contentDescription = "Exit to app Icon"
                                     )
                                 }
@@ -56,11 +58,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) { innerPadding ->
-                    HomeScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        techUiState = techUiState,
-                        retryAction = viewModel::getAllBooks
-                    )
+                    Navigation(navController,innerPadding , viewModel)
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.internsathi.bookfinder.data
+package com.internsathi.bookfinder.model
 
 import kotlinx.serialization.Serializable
 

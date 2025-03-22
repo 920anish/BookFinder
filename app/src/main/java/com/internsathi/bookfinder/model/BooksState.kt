@@ -1,6 +1,4 @@
-package com.internsathi.bookfinder
-
-import com.internsathi.bookfinder.data.Books
+package com.internsathi.bookfinder.model
 
 sealed interface BooksUiState {
     data class Success(val books:Books) : BooksUiState
