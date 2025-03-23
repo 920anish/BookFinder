@@ -8,3 +8,5 @@ object Home
 @Serializable
 object Favourite
 
+@Serializable
+data class Detail(val id:String)
