@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.internsathi.bookfinder.ui.screens.DetailScreen
 import com.internsathi.bookfinder.ui.screens.FavouriteScreen
 import com.internsathi.bookfinder.ui.screens.HomeScreen
 import com.internsathi.bookfinder.viewmodel.BooksViewModel
@@ -34,6 +35,10 @@ fun Navigation(
         }
         composable<Favourite> {
             FavouriteScreen()
+        }
+
+        composable<Detail> {
+            DetailScreen()
         }
 
     }

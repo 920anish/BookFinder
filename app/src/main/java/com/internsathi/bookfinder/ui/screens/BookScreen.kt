@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,22 +30,21 @@ import coil3.compose.AsyncImage
 import com.internsathi.bookfinder.R
 import com.internsathi.bookfinder.model.Book
 import com.internsathi.bookfinder.model.Books
+import com.internsathi.bookfinder.navigation.Detail
+import com.internsathi.bookfinder.navigation.Home
 
 @Composable
 fun BookScreen(books: Books, modifier: Modifier = Modifier, navController: NavHostController) {
     LazyColumn(modifier = modifier) {
-
         items(books.items) { book ->
-            BookCard(book)
+            BookCard(book , navController)
         }
 
     }
-
-
 }
 
 @Composable
-fun BookCard(book: Book) {
+fun BookCard(book: Book, navController: NavHostController) {
     val imageUrl = book.volumeInfo.imageLinks?.thumbnail?.replaceFirst("http" ,"https")
 
     Card(
@@ -54,7 +52,15 @@ fun BookCard(book: Book) {
             .fillMaxWidth()
             .padding(8.dp)
             .clickable(
-                onClick = {},
+                onClick = {
+                    navController.navigate(
+                        route = Detail
+                    ){
+                        popUpTo(Home) {saveState = true}
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
 
             )
         ,
@@ -76,7 +82,7 @@ fun BookCard(book: Book) {
             )
             Column (modifier = Modifier.weight(2F)){
                 Text(book.volumeInfo.title , style = MaterialTheme.typography.bodyLarge)
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(book.volumeInfo.authors?.joinToString(",").toString() , style = MaterialTheme.typography.labelSmall)
             }
 

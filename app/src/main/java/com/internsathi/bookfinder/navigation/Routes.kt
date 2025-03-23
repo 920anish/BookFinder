@@ -9,4 +9,4 @@ object Home
 object Favourite
 
 @Serializable
-data class Detail(val id:String)
+object  Detail
