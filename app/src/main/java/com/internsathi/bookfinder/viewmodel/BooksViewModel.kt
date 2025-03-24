@@ -21,6 +21,8 @@ class BooksViewModel @Inject constructor(
 
 ) : ViewModel() {
 
+    //TODO refactor to remove duplicacy
+
     private val _techBooksState = MutableStateFlow<BooksUiState>(BooksUiState.Loading)
     val techBooksState = _techBooksState.asStateFlow()
 
@@ -80,7 +82,7 @@ class BooksViewModel @Inject constructor(
         }
     }
 
-
+    // stateflow maa convert gareko ,
     var isLightMode: StateFlow<Boolean> = userPreferencesRepository.isLightMode.stateIn(
         viewModelScope,
         SharingStarted.Companion.WhileSubscribed(5000),

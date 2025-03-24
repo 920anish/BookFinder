@@ -11,11 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.internsathi.bookfinder.model.BooksUiState
 import com.internsathi.bookfinder.viewmodel.BooksViewModel
 
@@ -24,12 +24,13 @@ fun HomeScreen(
     modifier: Modifier,
     retryAction: () -> Unit,
     viewModel: BooksViewModel,
-    navController: NavHostController
+    onNavigateToDetail : (String , String , List<String>? , String , String? , String?) -> Unit,
 
-) {
+    ) {
+
+
     //later view model bata , for now temp
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
-
+    var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     val tabs = listOf(
         "Technology", "Horror", "Comedy"
     )
@@ -66,7 +67,7 @@ fun HomeScreen(
             is BooksUiState.Error -> ErrorScreen(retryAction)
             is BooksUiState.Success -> BookScreen(
                 books = state.books,
-                navController = navController
+                onNavigateToDetail = onNavigateToDetail
             )
         }
 

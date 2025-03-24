@@ -9,4 +9,5 @@ object Home
 object Favourite
 
 @Serializable
-object  Detail
+data class Detail(val id:String  , val title  : String , val authors: List<String>? , val publishedDate : String , val imageUrl: String? , val description:String?  )
+
