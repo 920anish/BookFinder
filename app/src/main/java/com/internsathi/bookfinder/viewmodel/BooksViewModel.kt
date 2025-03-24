@@ -3,21 +3,26 @@ package com.internsathi.bookfinder.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.internsathi.bookfinder.data.BooksRepository
+import com.internsathi.bookfinder.data.OfflineFavouriteBooksRepository
 import com.internsathi.bookfinder.data.UserPreferencesRepository
 import com.internsathi.bookfinder.model.BooksUiState
+import com.internsathi.bookfinder.model.FavouriteBook
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 import javax.inject.Inject
 
 @HiltViewModel
 class BooksViewModel @Inject constructor(
     private val booksRepository: BooksRepository,
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val userPreferencesRepository: UserPreferencesRepository,
+    private val offlineFavouriteBooksRepository: OfflineFavouriteBooksRepository
 
 ) : ViewModel() {
 
@@ -74,7 +79,7 @@ class BooksViewModel @Inject constructor(
         viewModelScope.launch {
             _comedyBooksState.value = BooksUiState.Loading
             try {
-                val result = booksRepository.getBooksByCategory("comedy" , 5)
+                val result = booksRepository.getBooksByCategory("comedy" , 10)
                 _comedyBooksState.value = BooksUiState.Success(result)
             } catch (_: Exception) {
                 _comedyBooksState.value = BooksUiState.Error
@@ -83,6 +88,7 @@ class BooksViewModel @Inject constructor(
     }
 
     // stateflow maa convert gareko ,
+    //for theme
     var isLightMode: StateFlow<Boolean> = userPreferencesRepository.isLightMode.stateIn(
         viewModelScope,
         SharingStarted.Companion.WhileSubscribed(5000),
@@ -94,4 +100,24 @@ class BooksViewModel @Inject constructor(
             userPreferencesRepository.saveThemePreferences(!isLightMode.value)
         }
     }
+
+
+    //for room db
+
+    val allFavouriteBooks = offlineFavouriteBooksRepository.getAllFavouriteBooksStream()
+
+    fun getBookById(id:String)  = offlineFavouriteBooksRepository.getFavouriteBookByIdSream(id)
+
+    fun insertFavouriteBook(book : FavouriteBook) {
+        viewModelScope.launch(Dispatchers.IO) {
+            offlineFavouriteBooksRepository.insertFavouriteBook(book)
+        }
+    }
+    fun deleteFavouriteBook(book : FavouriteBook) {
+        viewModelScope.launch(Dispatchers.IO) {
+            offlineFavouriteBooksRepository.deleteFavouriteBook(book)
+        }
+    }
+
+
 }

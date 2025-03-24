@@ -24,9 +24,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.internsathi.bookfinder.model.FavouriteBook
+import com.internsathi.bookfinder.viewmodel.BooksViewModel
 
 
-//TODO remove id
+//TODO add snackbar for add completion , maybe icon change too
 @Composable
 fun DetailScreen(
     id: String,
@@ -35,8 +37,18 @@ fun DetailScreen(
     publishedDate: String,
     imageUrl: String?,
     description: String?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: BooksViewModel
 ) {
+
+    val book = FavouriteBook(
+        id = id,
+        title = title,
+        authors = authors?.joinToString(","),
+        imageUrl = imageUrl,
+        publishedDate = publishedDate,
+        description = description ?: "No Description Available"
+    )
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -79,7 +91,9 @@ fun DetailScreen(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                 )
             }
-            IconButton(onClick = {} , modifier = Modifier.weight(0.5F)) {
+            IconButton(onClick = {
+                viewModel.insertFavouriteBook(book)
+            } , modifier = Modifier.weight(0.5F)) {
                 Icon(
                     imageVector = Icons.Outlined.AddTask,
                     contentDescription = "Favourite Icon",

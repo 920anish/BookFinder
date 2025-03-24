@@ -29,7 +29,6 @@ fun Navigation(
             HomeScreen(
                 modifier = Modifier.padding(innerPaddingValues),
                 viewModel = viewModel,
-
                 retryAction =viewModel::getAllBooks,
                 onNavigateToDetail = {
                     id , title , authors , publishedDate , imageUrl , description ->
@@ -46,6 +45,8 @@ fun Navigation(
         }
         composable<Favourite> {
             FavouriteScreen(
+                modifier = Modifier.padding(innerPaddingValues),
+                viewModel = viewModel,
 
             )
         }
@@ -59,7 +60,7 @@ fun Navigation(
             val description = it.toRoute<Detail>().description
             DetailScreen(
                 modifier = Modifier.padding(innerPaddingValues),
-
+                viewModel = viewModel,
                 id =  id ,
                 title = title ,
                 authors = authors ,

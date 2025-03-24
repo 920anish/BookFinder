@@ -7,9 +7,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.internsathi.bookfinder.viewmodel.BooksViewModel
 
 @Composable
-fun FavouriteScreen() {
+fun FavouriteScreen(viewModel: BooksViewModel, modifier: Modifier) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
