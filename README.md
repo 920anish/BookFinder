@@ -90,7 +90,7 @@ BookFinderApp
 1.  **Clone the repository:**
     
     ```sh
-    git clone https://github.com/anish920/BookFinderApp.git
+    git clone https://github.com/920anish/BookFinder.git
     
     ```
     
