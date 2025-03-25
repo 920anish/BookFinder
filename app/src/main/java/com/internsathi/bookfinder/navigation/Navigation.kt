@@ -2,6 +2,7 @@ package com.internsathi.bookfinder.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -19,7 +20,8 @@ import com.internsathi.bookfinder.viewmodel.BooksViewModel
 fun Navigation(
     navController: NavHostController,
     innerPaddingValues: PaddingValues,
-    viewModel: BooksViewModel
+    viewModel: BooksViewModel,
+    snackbarHostState: SnackbarHostState
 ) {
 
     NavHost(
@@ -40,12 +42,13 @@ fun Navigation(
     ) {
         composable <Home> {
             HomeScreen(
+
                 modifier = Modifier.padding(innerPaddingValues),
                 onNavigateToFavourite = {
                     navController.navigate(route = Favourite){
                         popUpTo(Home) {saveState = true}
                         launchSingleTop = true
-                        restoreState = true
+                        restoreState = false
 
                     }
                 },
@@ -64,23 +67,28 @@ fun Navigation(
 
             )
         }
+
+        //TODO fix route backstack popup
         composable<Favourite> {
             FavouriteScreen(
+                snackbarHostState = snackbarHostState,
                 modifier = Modifier.padding(innerPaddingValues),
                 viewModel = viewModel,
                 onNavigateToFavouriteDetail = {
-                    navController.navigate(route = FavouriteDetail){
-                        popUpTo(Home) {saveState = true}
+                    id ->
+                    navController.navigate(route = FavouriteDetail(id)){
+                        popUpTo(Favourite) {saveState = true}
                         launchSingleTop = true
-                        restoreState = true
+                        restoreState = false
                     }
 
-                }
+                },
 
             )
         }
 
         composable<Detail> {
+
             val id = it.toRoute<Detail>().id
             val title = it.toRoute<Detail>().title
             val authors = it.toRoute<Detail>().authors
@@ -88,6 +96,7 @@ fun Navigation(
             val imageUrl = it.toRoute<Detail>().imageUrl
             val description = it.toRoute<Detail>().description
             DetailScreen(
+                snackbarHostState = snackbarHostState,
                 modifier = Modifier.padding(innerPaddingValues),
                 viewModel = viewModel,
                 id =  id ,
@@ -100,7 +109,12 @@ fun Navigation(
 
 
         composable<FavouriteDetail> {
-            FavouriteDetailScreen()
+            val id = it.toRoute<FavouriteDetail>().id
+            FavouriteDetailScreen(
+                id = id ,
+                modifier = Modifier.padding(innerPaddingValues),
+                viewModel = viewModel,
+            )
         }
 
 

@@ -13,9 +13,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.internsathi.bookfinder.navigation.Navigation
@@ -34,11 +37,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
+            val snackbarHostState = remember { SnackbarHostState() }
 
             val viewModel: BooksViewModel by viewModels()
             val isLightMode = viewModel.isLightMode.collectAsState()
             BookFinderTheme(darkTheme = !isLightMode.value ) {
                 Scaffold(
+                    snackbarHost = { SnackbarHost(snackbarHostState) },
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
                         TopAppBar(
@@ -62,7 +67,7 @@ class MainActivity : ComponentActivity() {
                         BottomNavBar(navController)
                     }
                 ) { innerPadding ->
-                    Navigation(navController,innerPadding , viewModel)
+                    Navigation(navController,innerPadding , viewModel , snackbarHostState)
                 }
             }
         }

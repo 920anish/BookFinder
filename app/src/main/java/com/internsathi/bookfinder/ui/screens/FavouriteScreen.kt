@@ -13,13 +13,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -30,23 +33,33 @@ import coil3.compose.AsyncImage
 import com.internsathi.bookfinder.R
 import com.internsathi.bookfinder.model.FavouriteBook
 import com.internsathi.bookfinder.viewmodel.BooksViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun FavouriteScreen(
     viewModel: BooksViewModel,
     modifier: Modifier = Modifier,
-    onNavigateToFavouriteDetail: () -> Unit
-) {
+    onNavigateToFavouriteDetail: (String) -> Unit,
+    snackbarHostState: SnackbarHostState,
+
+    ) {
+
+    val coroutineScope = rememberCoroutineScope()
 
     val books = viewModel.allFavouriteBooks.collectAsStateWithLifecycle(initialValue = emptyList())
     Column(
-        modifier = modifier.fillMaxSize().padding(16.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
     ) {
 
         if (books.value.isEmpty()) {
+            Spacer(modifier)
+
             Text(
                 "No Books Saved",
-                modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+                modifier = modifier.align(alignment = Alignment.CenterHorizontally),
                 style = MaterialTheme.typography.bodyLarge
             )
         } else {
@@ -55,7 +68,7 @@ fun FavouriteScreen(
             LazyColumn(modifier = Modifier) {
 
                 items(books.value) { book ->
-                    FavouriteCard(book , onNavigateToFavouriteDetail)
+                    FavouriteCard(book , onNavigateToFavouriteDetail , viewModel , coroutineScope , snackbarHostState)
                     Spacer(modifier= Modifier.height(8.dp))
                 }
             }
@@ -64,12 +77,18 @@ fun FavouriteScreen(
 }
 
 @Composable
-fun FavouriteCard(book: FavouriteBook, onNavigateToFavouriteDetail: () -> Unit) {
+fun FavouriteCard(
+    book: FavouriteBook,
+    onNavigateToFavouriteDetail: (String) -> Unit,
+    viewModel: BooksViewModel,
+    coroutineScope: CoroutineScope,
+    snackbarHostState: SnackbarHostState
+) {
     Card(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .clickable (onClick = onNavigateToFavouriteDetail),
+            .clickable(onClick = { onNavigateToFavouriteDetail(book.id) }),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Row(modifier = Modifier,
@@ -98,7 +117,13 @@ fun FavouriteCard(book: FavouriteBook, onNavigateToFavouriteDetail: () -> Unit) 
                 Text(book.publishedDate, style = MaterialTheme.typography.labelSmall)
             }
             IconButton(
-                onClick = {}
+                onClick = {
+                    viewModel.deleteFavouriteBook(book)
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar("Book deleted from favourite list")
+                    }
+
+                }
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,

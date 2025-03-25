@@ -11,12 +11,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddTask
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -26,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.internsathi.bookfinder.model.FavouriteBook
 import com.internsathi.bookfinder.viewmodel.BooksViewModel
+import kotlinx.coroutines.launch
 
 
 //TODO add snackbar for add completion , maybe icon change too
@@ -38,9 +43,10 @@ fun DetailScreen(
     imageUrl: String?,
     description: String?,
     modifier: Modifier = Modifier,
-    viewModel: BooksViewModel
+    viewModel: BooksViewModel,
+    snackbarHostState: SnackbarHostState
 ) {
-
+    val coroutineScope = rememberCoroutineScope()
     val book = FavouriteBook(
         id = id,
         title = title,
@@ -91,11 +97,16 @@ fun DetailScreen(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                 )
             }
-            IconButton(onClick = {
+            IconButton(
+                onClick = {
                 viewModel.insertFavouriteBook(book)
-            } , modifier = Modifier.weight(0.5F)) {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar("Added to Favourites!")
+                    }
+                 },
+                modifier = Modifier.weight(0.5F)) {
                 Icon(
-                    imageVector = Icons.Outlined.AddTask,
+                    imageVector = Icons.Outlined.Favorite,
                     contentDescription = "Favourite Icon",
                     modifier = Modifier
                 )
