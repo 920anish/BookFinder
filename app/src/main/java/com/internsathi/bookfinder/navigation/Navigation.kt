@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.internsathi.bookfinder.ui.screens.DetailScreen
+import com.internsathi.bookfinder.ui.screens.FavouriteDetailScreen
 import com.internsathi.bookfinder.ui.screens.FavouriteScreen
 import com.internsathi.bookfinder.ui.screens.HomeScreen
 import com.internsathi.bookfinder.viewmodel.BooksViewModel
@@ -23,11 +24,31 @@ fun Navigation(
 
     NavHost(
         navController = navController,
-        startDestination = Home
+        startDestination = Home,
+//                enterTransition = {
+//            EnterTransition.None
+//        },
+//        exitTransition = {
+//            ExitTransition.None
+//        },
+//        popEnterTransition = {
+//            EnterTransition.None
+//        },
+//        popExitTransition = {
+//            ExitTransition.None
+//        }
     ) {
         composable <Home> {
             HomeScreen(
                 modifier = Modifier.padding(innerPaddingValues),
+                onNavigateToFavourite = {
+                    navController.navigate(route = Favourite){
+                        popUpTo(Home) {saveState = true}
+                        launchSingleTop = true
+                        restoreState = true
+
+                    }
+                },
                 viewModel = viewModel,
                 retryAction =viewModel::getAllBooks,
                 onNavigateToDetail = {
@@ -47,6 +68,14 @@ fun Navigation(
             FavouriteScreen(
                 modifier = Modifier.padding(innerPaddingValues),
                 viewModel = viewModel,
+                onNavigateToFavouriteDetail = {
+                    navController.navigate(route = FavouriteDetail){
+                        popUpTo(Home) {saveState = true}
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+
+                }
 
             )
         }
@@ -68,6 +97,12 @@ fun Navigation(
                 imageUrl = imageUrl ,
                 description = description)
         }
+
+
+        composable<FavouriteDetail> {
+            FavouriteDetailScreen()
+        }
+
 
     }
 

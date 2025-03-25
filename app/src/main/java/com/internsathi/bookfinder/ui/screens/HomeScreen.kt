@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -24,7 +23,8 @@ fun HomeScreen(
     modifier: Modifier,
     retryAction: () -> Unit,
     viewModel: BooksViewModel,
-    onNavigateToDetail : (String , String , List<String>? , String , String? , String?) -> Unit,
+    onNavigateToDetail: (String, String, List<String>?, String, String?, String?) -> Unit,
+    onNavigateToFavourite: () -> Unit,
 
     ) {
 
@@ -64,7 +64,7 @@ fun HomeScreen(
         when (state) {
 
             is BooksUiState.Loading -> CircularProgressIndicator(modifier = Modifier.fillMaxSize().wrapContentSize(align = Alignment.Center))
-            is BooksUiState.Error -> ErrorScreen(retryAction)
+            is BooksUiState.Error -> ErrorScreen(retryAction , onNavigateToFavourite)
             is BooksUiState.Success -> BookScreen(
                 books = state.books,
                 onNavigateToDetail = onNavigateToDetail

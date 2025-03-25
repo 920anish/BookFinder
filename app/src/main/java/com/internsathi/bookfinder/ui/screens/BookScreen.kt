@@ -44,8 +44,6 @@ fun BookScreen(
 fun BookCard(
     book: Book,
     onNavigateToDetail : (String , String , List<String>? , String , String? , String?) -> Unit,
-
-
     ) {
     //http image display hunna so,
     val imageUrl = book.volumeInfo.imageLinks?.thumbnail?.replaceFirst("http" ,"https")
