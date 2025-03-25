@@ -2,9 +2,9 @@ package com.internsathi.bookfinder.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.internsathi.bookfinder.data.BooksRepository
-import com.internsathi.bookfinder.data.OfflineFavouriteBooksRepository
-import com.internsathi.bookfinder.data.UserPreferencesRepository
+import com.internsathi.bookfinder.data.network.BooksRepository
+import com.internsathi.bookfinder.data.local.OfflineFavouriteBooksRepository
+import com.internsathi.bookfinder.data.local.UserPreferencesRepository
 import com.internsathi.bookfinder.model.BooksUiState
 import com.internsathi.bookfinder.model.FavouriteBook
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 import javax.inject.Inject
 
 @HiltViewModel
@@ -103,7 +102,6 @@ class BooksViewModel @Inject constructor(
 
 
     //for room db
-
     val allFavouriteBooks = offlineFavouriteBooksRepository.getAllFavouriteBooksStream()
 
     fun getBookById(id:String)  = offlineFavouriteBooksRepository.getFavouriteBookByIdSream(id)

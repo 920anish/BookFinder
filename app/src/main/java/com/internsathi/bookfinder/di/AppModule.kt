@@ -5,9 +5,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
-import com.internsathi.bookfinder.data.BooksApiService
-import com.internsathi.bookfinder.data.FavouriteBookDao
-import com.internsathi.bookfinder.data.FavouriteBooksDatabase
+import com.internsathi.bookfinder.data.network.BooksApiService
+import com.internsathi.bookfinder.data.local.FavouriteBookDao
+import com.internsathi.bookfinder.data.local.FavouriteBooksDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

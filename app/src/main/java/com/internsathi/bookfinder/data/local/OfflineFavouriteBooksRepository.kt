@@ -1,4 +1,4 @@
-package com.internsathi.bookfinder.data
+package com.internsathi.bookfinder.data.local
 
 import com.internsathi.bookfinder.model.FavouriteBook
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +12,7 @@ class OfflineFavouriteBooksRepository @Inject constructor(
 
     override suspend fun deleteFavouriteBook(favouriteBook: FavouriteBook) = favouriteBookDao.delete(favouriteBook)
 
-    override fun getFavouriteBookByIdSream(id: String): Flow<FavouriteBook>  = favouriteBookDao.getFavouriteBookById(id)
+    override fun getFavouriteBookByIdSream(id: String): Flow<FavouriteBook> = favouriteBookDao.getFavouriteBookById(id)
 
     override fun getAllFavouriteBooksStream(): Flow<List<FavouriteBook>> = favouriteBookDao.getAllFavouriteBooks()
 

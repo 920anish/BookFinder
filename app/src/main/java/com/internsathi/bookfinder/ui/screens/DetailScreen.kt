@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AddTask
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -19,7 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,8 +30,6 @@ import com.internsathi.bookfinder.model.FavouriteBook
 import com.internsathi.bookfinder.viewmodel.BooksViewModel
 import kotlinx.coroutines.launch
 
-
-//TODO add snackbar for add completion , maybe icon change too
 @Composable
 fun DetailScreen(
     id: String,

@@ -22,7 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.internsathi.bookfinder.navigation.Navigation
-import com.internsathi.bookfinder.ui.screens.BottomNavBar
+import com.internsathi.bookfinder.ui.utils.BottomNavBar
 import com.internsathi.bookfinder.ui.theme.BookFinderTheme
 import com.internsathi.bookfinder.viewmodel.BooksViewModel
 import dagger.hilt.android.AndroidEntryPoint

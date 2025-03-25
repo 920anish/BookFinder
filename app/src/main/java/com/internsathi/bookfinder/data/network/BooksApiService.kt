@@ -1,4 +1,4 @@
-package com.internsathi.bookfinder.data
+package com.internsathi.bookfinder.data.network
 
 import com.internsathi.bookfinder.model.Books
 import retrofit2.http.GET

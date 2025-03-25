@@ -1,4 +1,4 @@
-package com.internsathi.bookfinder.data
+package com.internsathi.bookfinder.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

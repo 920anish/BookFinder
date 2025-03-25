@@ -1,5 +1,4 @@
-package com.internsathi.bookfinder.ui.screens
-
+package com.internsathi.bookfinder.ui.utils
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

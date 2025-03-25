@@ -27,6 +27,7 @@ fun Navigation(
     NavHost(
         navController = navController,
         startDestination = Home,
+// Navigation animation remove
 //                enterTransition = {
 //            EnterTransition.None
 //        },
@@ -68,7 +69,6 @@ fun Navigation(
             )
         }
 
-        //TODO fix route backstack popup
         composable<Favourite> {
             FavouriteScreen(
                 snackbarHostState = snackbarHostState,
@@ -79,7 +79,7 @@ fun Navigation(
                     navController.navigate(route = FavouriteDetail(id)){
                         popUpTo(Favourite) {saveState = true}
                         launchSingleTop = true
-                        restoreState = false
+                        restoreState = true
                     }
 
                 },

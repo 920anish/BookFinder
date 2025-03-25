@@ -1,4 +1,4 @@
-package com.internsathi.bookfinder.data
+package com.internsathi.bookfinder.data.local
 
 import com.internsathi.bookfinder.model.FavouriteBook
 import kotlinx.coroutines.flow.Flow

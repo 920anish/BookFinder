@@ -1,4 +1,4 @@
-package com.internsathi.bookfinder.ui.screens
+package com.internsathi.bookfinder.ui.utils
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -22,8 +22,8 @@ import com.internsathi.bookfinder.navigation.Home
 @Composable
 fun BottomNavBar(navController: NavController) {
     val items = listOf(
-        BottomNavItem("Home" , Icons.Filled.Home ,Icons.Outlined.Home , Home),
-        BottomNavItem("Favourite" ,Icons.Default.Favorite ,Icons.Default.FavoriteBorder,Favourite )
+        BottomNavItem("Home", Icons.Filled.Home, Icons.Outlined.Home, Home),
+        BottomNavItem("Favourite", Icons.Default.Favorite, Icons.Default.FavoriteBorder, Favourite)
     )
 
 
@@ -38,13 +38,16 @@ fun BottomNavBar(navController: NavController) {
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
+                    if (currentDestination?.hasRoute(item.route::class) == true) return@NavigationBarItem
+
                     navController.navigate(item.route) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                        restoreState = false
                     }
-                    launchSingleTop = true
-                    restoreState = true
-                } },
+                },
                 icon = {
                     Icon(if(isSelected)item.selectedIcon else item.unselectedIcon, "navigation icon")
                 },

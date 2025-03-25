@@ -28,8 +28,6 @@ fun HomeScreen(
 
     ) {
 
-
-    //later view model bata , for now temp
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     val tabs = listOf(
         "Technology", "Horror", "Comedy"
