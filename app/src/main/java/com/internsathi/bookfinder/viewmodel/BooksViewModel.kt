@@ -25,66 +25,57 @@ class BooksViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    //TODO refactor to remove duplicacy
+    // fetch garda book ko config ko data class
+    private data class BookCategory(
+        val name: String,
+        val maxResults: Int,
+        val stateFlow: MutableStateFlow<BooksUiState>
+    )
 
-    private val _techBooksState = MutableStateFlow<BooksUiState>(BooksUiState.Loading)
-    val techBooksState = _techBooksState.asStateFlow()
+    private val bookCategories = listOf(
+        BookCategory("technology", 3, MutableStateFlow(BooksUiState.Loading)),
+        BookCategory("horror", 7, MutableStateFlow(BooksUiState.Loading)),
+        BookCategory("comedy", maxResults = 10, stateFlow = MutableStateFlow(BooksUiState.Loading))
+    )
 
+    // read only part expose gareko
+    val techBooksState = bookCategories[0].stateFlow.asStateFlow()
+    val horrorBooksState = bookCategories[1].stateFlow.asStateFlow()
+    val comedyBooksState = bookCategories[2].stateFlow.asStateFlow()
 
-    private val _comedyBooksState = MutableStateFlow<BooksUiState>(BooksUiState.Loading)
-    val comedyBooksState = _comedyBooksState.asStateFlow()
-
-
-    private val _horrorBooksState = MutableStateFlow<BooksUiState>(BooksUiState.Loading)
-    val horrorBooksState = _horrorBooksState.asStateFlow()
-
-
+    // Initialize by fetching all books
     init {
         getAllBooks()
     }
 
-
+    // Fetch all books for different categories
     fun getAllBooks() {
-        fetchTechnologyBooks()
-        fetchHorrorBooks()
-        fetchComedyBooks()
+        bookCategories.forEach { category ->
+            fetchBooksByCategory(category)
+        }
     }
 
-    private fun fetchTechnologyBooks() {
+    // Generic method to fetch books for a specific category
+    private fun fetchBooksByCategory(category: BookCategory) {
         viewModelScope.launch {
-            _techBooksState.value = BooksUiState.Loading
+            // suru maa loading
+            category.stateFlow.value = BooksUiState.Loading
+
             try {
-                val result = booksRepository.getBooksByCategory("technology" , 3)
-                _techBooksState.value = BooksUiState.Success(result)
+                //fetch vayesi  success maa data
+                val result = booksRepository.getBooksByCategory(
+                    category.name,
+                    category.maxResults
+                )
+
+                category.stateFlow.value = BooksUiState.Success(result)
             } catch (_: Exception) {
-                _techBooksState.value = BooksUiState.Error
+                // incase of error , generic for now
+                category.stateFlow.value = BooksUiState.Error
             }
         }
     }
 
-    private fun fetchHorrorBooks() {
-        viewModelScope.launch {
-            _horrorBooksState.value = BooksUiState.Loading
-            try {
-                val result = booksRepository.getBooksByCategory("horror" , 7)
-                _horrorBooksState.value = BooksUiState.Success(result)
-            } catch (_: Exception) {
-                _horrorBooksState.value = BooksUiState.Error
-            }
-        }
-    }
-
-    private fun fetchComedyBooks() {
-        viewModelScope.launch {
-            _comedyBooksState.value = BooksUiState.Loading
-            try {
-                val result = booksRepository.getBooksByCategory("comedy" , 10)
-                _comedyBooksState.value = BooksUiState.Success(result)
-            } catch (_: Exception) {
-                _comedyBooksState.value = BooksUiState.Error
-            }
-        }
-    }
 
     // stateflow maa convert gareko ,
     //for theme
